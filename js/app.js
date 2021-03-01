@@ -80,6 +80,27 @@ function handelClick(event) {
                 mall.all[middleMallPicture].clicks++;
             }
             mall.counter++;
+            if (mall.counter === clickCounter) {
+                const parentElement = document.getElementById('result');
+                const button = document.createElement('button');
+                parentElement.appendChild(button);
+                button.innerText = 'View Results';
+                button.addEventListener('click', function() {
+                    button.innerText = 'Reset';
+                    button.onclick = function() {
+                        location.reload();
+                    };
+                    const ulElement = document.createElement('ul');
+                    parentElement.appendChild(ulElement);
+
+                    for (let i = 0; i < mall.all.length; i++) {
+                        const liElement = document.createElement('li');
+                        ulElement.appendChild(liElement);
+                        liElement.textContent = `${mall.all[i].name}  had  ${mall.all[i].clicks}  votes, and was seen  ${mall.all[i].shown} times.`;
+                    }
+
+                });
+            }
             renderNewMall();
 
             console.log(mall.all);
