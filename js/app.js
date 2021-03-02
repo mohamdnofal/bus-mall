@@ -109,11 +109,12 @@ function handelClick(event) {
             console.log(mall.all);
         }
     }else {
+      localStorage.setItem( 'mall', JSON.stringify( mall.all ) );
         renderChart();
       }
 }
-
 imgSection.addEventListener('click', handelClick);
+
 
 // // Helper function
 function randomNumber(min, max) {
@@ -131,7 +132,6 @@ function renderChart() {
       nameArray.push(mall.all[i].name);
       clicksArray.push(mall.all[i].clicks);
       showArray.push(mall.all[i].shown);
-  
     }
   
     let ctx = document.getElementById( 'myChart' ).getContext( '2d' );
@@ -169,4 +169,14 @@ function renderChart() {
       }
     } );
   }
+  function getData() {
+    const data = localStorage.getItem( 'mall' );
+    if( data ) {
+      const mallData = JSON.parse( data );
+      mall.all = mallData;
+    }
+  }
+  
+  getData();
+  
   
