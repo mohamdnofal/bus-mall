@@ -52,8 +52,8 @@ function renderNewMall() {
     let middlePicture;
     do {
         middlePicture = randomNumber(0, mall.all.length - 1);
-    }
-    while (rightPicture === middlePicture || leftPicture === middlePicture);
+    }  while (rightPicture === middlePicture || leftPicture === middlePicture);
+
 
     middleImg.src = mall.all[middlePicture].img;
     middleImg.alt = mall.all[middlePicture].name;
@@ -62,6 +62,8 @@ function renderNewMall() {
     mall.all[leftPicture].shown++;
     mall.all[rightPicture].shown++;
     mall.all[middlePicture].shown++;
+    
+
 }
 
 function handelClick(event) {
@@ -79,6 +81,7 @@ function handelClick(event) {
             if (clickedElement.id === 'middleImg') {
                 mall.all[middleMallPicture].clicks++;
             }
+            
             mall.counter++;
             if (mall.counter === clickCounter) {
                 const parentElement = document.getElementById('result');
@@ -96,16 +99,18 @@ function handelClick(event) {
                     for (let i = 0; i < mall.all.length; i++) {
                         const liElement = document.createElement('li');
                         ulElement.appendChild(liElement);
-                        liElement.textContent = `${mall.all[i].name}  had  ${mall.all[i].clicks}  votes, and was seen  ${mall.all[i].shown} times.`;
+                        liElement.textContent = `${mall.all[i].name}  had  ${mall.all[i].clicks}  votes, and it's appeared  ${mall.all[i].shown} times.`;
                     }
-
+                    
                 });
             }
             renderNewMall();
-
+            
             console.log(mall.all);
         }
-    }
+    }else {
+        renderChart();
+      }
 }
 
 imgSection.addEventListener('click', handelClick);
@@ -115,3 +120,53 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 renderNewMall();
+
+function renderChart() {
+
+    let nameArray = [];
+    let clicksArray = [];
+    let showArray = [];
+  
+    for(let i = 0; i < mall.all.length; i++) {
+      nameArray.push(mall.all[i].name);
+      clicksArray.push(mall.all[i].clicks);
+      showArray.push(mall.all[i].shown);
+  
+    }
+  
+    let ctx = document.getElementById( 'myChart' ).getContext( '2d' );
+    new Chart( ctx, {
+      type: 'bar',
+      data: {
+        labels: nameArray,
+        datasets: [
+          {
+            label: '# of Votes',
+            data: clicksArray,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 3
+          },
+          {
+            label: '# of shown',
+            data: showArray,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)' ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)'],
+            borderWidth: 3
+          }
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    } );
+  }
+  
